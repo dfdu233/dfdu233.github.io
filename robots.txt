@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://dfdu233.github.io/al-folio/sitemap.xml
+Sitemap: https://dfdu233.github.io/sitemap.xml
