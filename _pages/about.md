@@ -1,12 +1,12 @@
 ---
 layout: about
-title: about
+title: Bowen Du
 permalink: /
-subtitle: <a href='#'>Affiliations</a>. Address. Contacts. Motto. Etc.
+subtitle: <a href='#'>Affiliations</a>. Sichuan University
 
 profile:
   align: right
-  image: prof_pic.jpg
+  image: dubowen.jpg
   image_circular: false # crops the image to make it circular
   more_info: >
     <p>555 your office number</p>
@@ -17,9 +17,8 @@ news: true # includes a list of news items
 selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
 ---
+Bowen Du (杜博文) is a fourth-year undergraduate student in Artificial Intelligence at Sichuan University, advised by Prof. Junjie Hu. He will graduate in 2026.
 
-Write your biography here. Tell the world about yourself. Link to your favorite [subreddit](http://reddit.com). You can put a picture in, too. The code is already in, just name your picture `prof_pic.jpg` and put it in the `img/` folder.
+His research interests lie at the intersection of natural language processing and machine learning systems, with a particular focus on large language model infrastructure, efficient training, and optimization. He has worked on system-level challenges such as distributed training of Megatron-LM, LoRA-based fine-tuning under quantization, and customized loss function design for domain-specific tasks. Beyond NLP, he also conducts research on medical image reconstruction (CBCT), where he explores deep learning–based methods for sparse-view 3D reconstruction.
 
-Put your address / P.O. box / other info right below your picture. You can also disable any of these elements by editing `profile` property of the YAML header of your `_pages/about.md`. Edit `_bibliography/papers.bib` and Jekyll will render your [publications page](/al-folio/publications/) automatically.
-
-Link to your social media connections, too. This theme is set up to use [Font Awesome icons](https://fontawesome.com/) and [Academicons](https://jpswalsh.github.io/academicons/), like the ones below. Add your Facebook, Twitter, LinkedIn, Google Scholar, or just disable all of them.
+He has published innovative work on loss function–based CBCT reconstruction, and his projects span both theory and practical deployment, ranging from hash-grid encoding to hybrid Transformer-CNN architectures. He was awarded the Huawei ICT National Second Prize in the Ascend AI track.
