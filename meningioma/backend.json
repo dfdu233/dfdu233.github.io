@@ -1,1 +1,6 @@
-{"api_base":"https://ffbe9be3f83db9.lhr.life","updated_at":"2026-10-20","connection_type":"temporary_tunnel"}
+{
+  "api_base": "https://funk-strongly-coins-understood.trycloudflare.com",
+  "updated_at": "2026-10-20",
+  "connection_type": "temporary_tunnel",
+  "provider": "cloudflare_quick_tunnel"
+}
