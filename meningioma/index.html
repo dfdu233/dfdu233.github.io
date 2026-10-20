@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>脑膜瘤文献证据库</title>
+  <meta name="description" content="脑膜瘤专科文献检索，提供可追溯原文、页码和来源的证据。">
+  <style>
+    :root { color-scheme: light; --ink:#172c3b; --muted:#566b78; --line:#d8e3e8; --accent:#11675e; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:#f4f8f8; color:var(--ink); font:16px/1.7 system-ui,-apple-system,"Segoe UI",sans-serif; }
+    .wrap { max-width:1080px; margin:auto; padding:24px; }
+    nav { display:flex; justify-content:space-between; gap:16px; font-size:14px; }
+    a { color:var(--accent); text-underline-offset:3px; }
+    header { padding:32px 0 20px; }
+    .eyebrow { color:var(--accent); font-size:13px; letter-spacing:.1em; margin:0; }
+    h1 { font-size:clamp(28px,4vw,38px); line-height:1.3; margin:10px 0; }
+    h2 { font-size:19px; margin:0 0 8px; }
+    p { margin:8px 0; }
+    .muted,.meta { color:var(--muted); }
+    .meta { font-size:14px; }
+    .card { background:white; border:1px solid var(--line); border-radius:12px; padding:24px; margin:16px 0; }
+    label { display:block; font-size:14px; color:var(--muted); }
+    input,select,button { font:inherit; }
+    input,select { border:1px solid #aabec7; border-radius:6px; padding:10px; width:100%; background:white; color:var(--ink); }
+    #q { font-size:17px; padding:14px; margin:6px 0 14px; }
+    .row { display:grid; grid-template-columns:1fr 1.5fr auto; align-items:end; gap:12px; }
+    .advanced { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; padding-top:12px; }
+    button { cursor:pointer; border:1px solid var(--accent); border-radius:6px; padding:10px 18px; background:var(--accent); color:white; }
+    button:disabled { opacity:.55; cursor:wait; }
+    details { margin-top:14px; }
+    summary { cursor:pointer; color:var(--muted); font-size:14px; }
+    .examples { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+    .examples button { background:#eef6f4; color:var(--accent); border-color:#d1e6df; padding:5px 10px; font-size:13px; }
+    #connection { font-size:14px; padding:10px 14px; border:1px solid var(--line); border-radius:6px; background:#fff; }
+    #connection[data-state="ok"] { color:#176046; background:#edf7f0; border-color:#bedecb; }
+    #connection[data-state="error"] { color:#8a4421; background:#fff4e9; border-color:#ecd1b7; }
+    #status { min-height:28px; }
+    .flag { background:#fff4db; padding:8px 12px; font-size:14px; border-radius:4px; }
+    .quote { white-space:pre-wrap; overflow-wrap:anywhere; line-height:1.85; margin:14px 0; }
+    .result-links { display:flex; flex-wrap:wrap; gap:16px; font-size:14px; }
+    .result-image { display:block; max-width:100%; max-height:600px; margin:12px auto; }
+    .endpoint-row { display:flex; gap:10px; margin-top:10px; }
+    .endpoint-row input { min-width:0; }
+    .endpoint-row button { white-space:nowrap; }
+    pre { white-space:pre-wrap; overflow-wrap:anywhere; font-size:13px; }
+    footer { border-top:1px solid var(--line); padding:20px 0; font-size:13px; color:var(--muted); }
+    :focus-visible { outline:3px solid #6caea5; outline-offset:3px; }
+    @media(max-width:640px) { .wrap { padding:18px; } .card { padding:18px; } .row,.advanced { grid-template-columns:1fr; } .endpoint-row { flex-direction:column; } }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <nav><a href="/">← 返回个人主页</a><span class="muted">文献检索 · 研究版</span></nav>
+  <header>
+    <p class="eyebrow">MENINGIOMA EVIDENCE LIBRARY</p>
+    <h1>脑膜瘤文献证据库</h1>
+    <p class="muted">检索指南、研究与解剖资料，定位可核对的原文证据。</p>
+    <p id="corpus" class="meta">10份PDF · 910页 · 4283个片段</p>
+  </header>
+  <p id="connection" role="status" aria-live="polite">正在连接检索服务…</p>
+  <section class="card" aria-label="文献检索">
+    <form id="search">
+      <label for="q">您想查找什么证据？</label>
+      <input id="q" placeholder="例如：EANO 2021 对脑膜瘤的 MRI 随访如何建议？" required maxlength="1500">
+      <div class="row">
+        <label>资料范围<select id="scope"><option value="core">脑膜瘤核心资料</option><option value="all">全部资料</option><option value="adjacent">围手术期及邻近主题</option><option value="anatomy">解剖背景</option></select></label>
+        <label>检索方法<select id="method"><option value="hybrid">混合检索</option></select></label>
+        <button id="submit" disabled>检索证据</button>
+      </div>
+      <details><summary>更多检索选项</summary><div class="advanced">
+        <label>限定文献<select id="doc"><option value="">不限定</option><option value="D001">D001 EANO中文解读</option><option value="D002">D002 EANO 2021</option><option value="D003">D003 Youmans章节</option><option value="D004">D004 ICOM 2024</option><option value="D005">D005 精准肿瘤学综述</option><option value="D006">D006 Rhoton解剖</option><option value="D007">D007 粒子治疗共识</option><option value="D008">D008 鞍区围手术期共识</option><option value="D009">D009 分子诊疗共识</option><option value="D012">D012 SSTR联合指南</option></select></label>
+        <label>向量后端<select id="backend"><option value="exact">精确检索</option><option value="faiss_flat">FAISS精确检索</option><option value="hnsw">HNSW近似检索</option></select></label>
+        <label>分解／多轮／图谱的基础检索<select id="base_method"><option value="hybrid">BM25＋多语E5</option><option value="bm25_lucene">Lucene BM25</option><option value="medcpt">MedCPT</option><option value="rrf4">四路RRF</option></select></label>
+        <label>额外重排<select id="reranker"><option value="none">使用该方法默认设置</option><option value="mmarco">多语mMARCO</option><option value="medcpt">MedCPT</option></select></label>
+        <label>多轮次数<select id="iterations"><option>2</option><option>3</option><option>4</option></select></label>
+        <label>证据条数<select id="k"><option>8</option><option selected>10</option><option>20</option><option>30</option></select></label>
+      </div></details>
+      <div class="examples"><button type="button" data-query="meningioma MRI follow-up">MRI随访</button><button type="button" data-query="meningioma molecular classification">分子分型</button><button type="button" data-query="meningioma radiotherapy">放疗证据</button></div>
+    </form>
+  </section>
+  <p id="status" role="status" aria-live="polite"></p>
+  <main id="results" aria-label="检索结果"></main>
+  <details class="card"><summary>服务连接设置</summary>
+    <p class="meta">网页地址固定；检索服务当前通过临时隧道连接。服务不可用时，可更新服务地址后重新连接。</p>
+    <div class="endpoint-row"><input id="endpoint" type="url" aria-label="检索服务地址" placeholder="https://检索服务地址"><button type="button" id="connect">连接服务</button><button type="button" id="reset">使用默认地址</button></div>
+    <p class="meta"><a id="direct" target="_blank" rel="noopener noreferrer" hidden>直接打开检索服务</a></p>
+  </details>
+  <footer>结果为文献证据摘录，需核对原页、版本与适用条件。排序分数不表示医学可信概率。本服务不生成最终医学答案；图谱共现和图像相似度不代表临床结论。</footer>
+</div>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+let apiBase = '', defaults = '', methods = [], connecting = false, searchController = null;
+const storageKey = 'meningioma.apiBase';
+function savedBase() { try { return localStorage.getItem(storageKey) || ''; } catch { return ''; } }
+function storeBase(value) { try { value ? localStorage.setItem(storageKey, value) : localStorage.removeItem(storageKey); } catch {} }
+function endpoint(value) {
+  const url = new URL(value);
+  if (url.protocol !== 'https:' || url.username || url.password || url.pathname !== '/' || url.search || url.hash) throw new Error('请输入不含路径的HTTPS服务地址');
+  return url.origin;
+}
+function resource(path) {
+  const url = new URL(path, apiBase + '/');
+  if (url.origin !== apiBase) throw new Error('证据链接的来源与检索服务不一致');
+  return url.href;
+}
+async function jsonRequest(path, options = {}) {
+  const response = await fetch(apiBase + path, { ...options, signal:options.signal || AbortSignal.timeout(30000) });
+  const text = await response.text();
+  let data;
+  try { data = JSON.parse(text); } catch { throw new Error('服务未返回有效数据，请检查服务连接'); }
+  if (!response.ok) throw new Error(data.error || `服务返回HTTP ${response.status}`);
+  return data;
+}
+function connection(state, text) { $('connection').dataset.state = state; $('connection').textContent = text; }
+function chooseMethod() {
+  const item = methods.find(m => m.method === $('method').value);
+  if (!item) return;
+  const onlyExact = item.supported_backends.length === 1;
+  $('backend').disabled = onlyExact;
+  if (onlyExact) $('backend').value = 'exact';
+  $('reranker').disabled = item.method === 'visual';
+  if ($('reranker').disabled) $('reranker').value = 'none';
+}
+async function connect(value) {
+  if (connecting) return;
+  connecting = true; $('connect').disabled = true; $('reset').disabled = true; $('submit').disabled = true;
+  connection('loading','正在连接检索服务…');
+  try {
+    apiBase = endpoint(value); $('endpoint').value = apiBase;
+    const [health, catalogue] = await Promise.all([jsonRequest('/api/health'),jsonRequest('/api/methods')]);
+    if (health.status !== 'ok') throw new Error('服务尚未就绪');
+    methods = catalogue.methods;
+    $('method').replaceChildren(...methods.map(m => { const option = document.createElement('option'); option.value = m.method; option.textContent = m.description + (m.ready ? '' : '（尚未就绪）'); option.disabled = !m.ready; return option; }));
+    $('method').value = 'hybrid'; chooseMethod();
+    $('corpus').textContent = `${health.documents}份PDF · ${health.pages}页 · ${health.chunks}个片段 · ${methods.filter(m => m.ready).length}种可用检索方法`;
+    $('direct').href = apiBase; $('direct').hidden = false;
+    connection('ok','检索服务已连接，可以开始检索。'); $('submit').disabled = false;
+  } catch (error) {
+    connection('error',`检索服务暂时无法连接。临时地址可能已失效，请在下方更新服务地址后重试。${error.message}`);
+  } finally { connecting = false; $('connect').disabled = false; $('reset').disabled = false; }
+}
+function textElement(tag, text, className) { const element = document.createElement(tag); element.textContent = text; if (className) element.className = className; return element; }
+function resultLink(text, path) { const link = textElement('a',text); link.href = resource(path); link.target = '_blank'; link.rel = 'noopener noreferrer'; return link; }
+function render(results) {
+  $('results').replaceChildren();
+  for (const item of results) {
+    const article = document.createElement('article'); article.className = 'card';
+    article.append(textElement('h2',item.title));
+    article.append(textElement('p',`${item.doc_id} · ${item.publication_year ?? '年份待核'} · ${item.source_type} · PDF第${item.pdf_page}页`,'meta'));
+    if (item.quality_flags?.length) article.append(textElement('p','质量标记：' + item.quality_flags.join('；'),'flag'));
+    if (item.image_url) { const img = document.createElement('img'); img.src = resource(item.image_url); img.alt = '检索到的原始PDF图像区域'; img.className = 'result-image'; img.loading = 'lazy'; article.append(img); }
+    article.append(textElement('div',item.text,'quote'));
+    if (item.graph_concepts?.length) article.append(textElement('p','共现概念：' + item.graph_concepts.join('、'),'meta'));
+    const links = document.createElement('div'); links.className = 'result-links';
+    links.append(resultLink('打开原始PDF',item.source_pdf_url),resultLink('核对原页与坐标',`/viewer?doc=${encodeURIComponent(item.doc_id)}&page=${item.pdf_page}`));
+    article.append(links,textElement('small',item.chunk_id,'meta')); $('results').append(article);
+  }
+}
+$('method').addEventListener('change',chooseMethod);
+$('connect').addEventListener('click',() => { try { const value = endpoint($('endpoint').value.trim()); storeBase(value); connect(value); } catch (e) { connection('error',e.message); } });
+$('reset').addEventListener('click',() => { storeBase(''); connect(defaults); });
+document.querySelectorAll('[data-query]').forEach(button => button.addEventListener('click',() => { $('q').value = button.dataset.query; $('q').focus(); }));
+$('search').addEventListener('submit',async event => {
+  event.preventDefault(); if (!apiBase) return;
+  if (searchController) searchController.abort();
+  searchController = new AbortController(); const timer = setTimeout(() => searchController.abort(),180000);
+  $('submit').disabled = true; $('connect').disabled = true; $('reset').disabled = true;
+  $('results').replaceChildren(); $('status').textContent = '正在检索证据，模型首次加载可能需要较长时间…';
+  try {
+    const params = new URLSearchParams({q:$('q').value.trim()});
+    for (const key of ['method','scope','doc','backend','base_method','reranker','iterations','k']) params.set(key,$(key).value);
+    const data = await jsonRequest('/api/search?' + params,{signal:searchController.signal});
+    render(data.results);
+    $('status').textContent = `找到${data.results.length}条证据 · 服务检索耗时${data.seconds}秒。` + (data.retrieval_warnings || []).join('；');
+    if (!data.results.length) $('results').append(textElement('p','当前范围未找到证据，可调整检索词或扩大资料范围。','card'));
+    if (data.details?.query_trace) { const details = document.createElement('details'); details.className = 'card'; details.append(textElement('summary','查看本次查询过程'),textElement('pre',JSON.stringify(data.details.query_trace,null,2))); $('results').append(details); }
+  } catch (error) { $('status').textContent = '检索失败：' + (error.name === 'AbortError' ? '请求等待超时，请稍后重试或切换较快的检索方法。' : error.message); }
+  finally { clearTimeout(timer); $('submit').disabled = false; $('connect').disabled = false; $('reset').disabled = false; }
+});
+(async () => {
+  try {
+    const response = await fetch('./backend.json',{cache:'no-store'});
+    if (!response.ok) throw new Error('无法读取连接配置');
+    defaults = endpoint((await response.json()).api_base);
+    await connect(savedBase() || defaults);
+  } catch (error) { connection('error','未能加载连接配置：' + error.message); }
+})();
+</script>
+</body>
+</html>
